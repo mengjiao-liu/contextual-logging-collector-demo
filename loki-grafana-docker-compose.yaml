@@ -1,0 +1,22 @@
+version: "2.1"
+volumes:
+  grafana:
+  postgres:
+services:
+  grafana:
+    image: grafana/grafana:10.2.3
+    volumes:
+      - "./grafana/definitions:/var/lib/grafana/dashboards"
+      - "./grafana/provisioning:/etc/grafana/provisioning"
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_FEATURE_TOGGLES_ENABLE=flameGraph traceqlSearch correlations traceQLStreaming metricsSummary traceqlEditor
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+  loki:
+    image: grafana/loki:2.9.3
+    ports:
+      - "3100:3100"
+      

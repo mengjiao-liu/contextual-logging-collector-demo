@@ -1,0 +1,26 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+featureGates:
+  ContextualLogging: true
+nodes:
+- role: control-plane
+  image: kindest/node:v1.29.2
+  kubeadmConfigPatches:
+  - |
+    kind: ClusterConfiguration
+    apiServer:
+        extraArgs:
+          v: "4"
+    controllerManager:
+        extraArgs:
+          v: "4"
+    scheduler:
+        extraArgs:
+          # Note that the default log format used by the cluster now is text. Later, we will set it to JSON format
+          #logging-format: text
+          v: "4"
+  - |
+    kind: KubeletConfiguration
+    logging:
+      format: text
+      verbosity: 4
